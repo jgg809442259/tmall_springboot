@@ -113,7 +113,7 @@ public class ForeRESTController {
     }
 
     @GetMapping("forecheckLogin")
-    public Object checkLogin( HttpSession session) {
+    public Object checkLogin(HttpSession session) {
         Subject subject = SecurityUtils.getSubject();
         if(subject.isAuthenticated())
             return Result.success();
