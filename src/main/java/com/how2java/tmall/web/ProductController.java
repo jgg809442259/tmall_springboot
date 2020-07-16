@@ -27,7 +27,7 @@ public class ProductController {
                                         @RequestParam(value = "size", defaultValue = "5") int size) throws Exception {
     	start = start<0?0:start;
     	Page4Navigator<Product> page =productService.list(cid, start, size,5 );
-        productImageService.setFirstProdutImages(page.getContent());
+        productImageService.setFirstProductImages(page.getContent());
     	return page;
     }
     

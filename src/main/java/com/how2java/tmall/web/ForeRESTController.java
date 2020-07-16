@@ -103,7 +103,7 @@ public class ForeRESTController {
         List<PropertyValue> pvs = propertyValueService.list(product);
         List<Review> reviews = reviewService.list(product);
         productService.setSaleAndReviewNumber(product);
-        productImageService.setFirstProdutImage(product);
+        productImageService.setFirstProductImage(product);
 
         Map<String,Object> map= new HashMap<>();
         map.put("product", product);
@@ -158,7 +158,7 @@ public class ForeRESTController {
         if(null==keyword)
             keyword = "";
         List<Product> ps= productService.search(keyword,0,20);
-        productImageService.setFirstProdutImages(ps);
+        productImageService.setFirstProductImages(ps);
         productService.setSaleAndReviewNumber(ps);
         return ps;
     }
@@ -206,7 +206,7 @@ public class ForeRESTController {
             total +=oi.getProduct().getPromotePrice()*oi.getNumber();
             orderItems.add(oi);
         }
-        productImageService.setFirstProdutImagesOnOrderItems(orderItems);
+        productImageService.setFirstProductImagesOnOrderItems(orderItems);
         session.setAttribute("ois", orderItems);
         Map<String,Object> map = new HashMap<>();
         map.put("orderItems", orderItems);
@@ -224,7 +224,7 @@ public class ForeRESTController {
     public Object cart(HttpSession session) {
         User user =(User)  session.getAttribute("user");
         List<OrderItem> ois = orderItemService.listByUser(user);
-        productImageService.setFirstProdutImagesOnOrderItems(ois);
+        productImageService.setFirstProductImagesOnOrderItems(ois);
         return ois;
     }
 

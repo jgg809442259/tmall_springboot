@@ -32,7 +32,7 @@ public class ProductImageService   {
 		return productImageDAO.findOne(id);
 	}
 
-	public void setFirstProdutImage(Product product) {
+	public void setFirstProductImage(Product product) {
 		ProductImageService productImageService = SpringContextUtil.getBean(ProductImageService.class);
 		List<ProductImage> singleImages = productImageService.listSingleProductImages(product);
 		if(!singleImages.isEmpty())
@@ -62,14 +62,14 @@ public class ProductImageService   {
 		return productImageDAO.findByProductAndTypeOrderByIdDesc(product, type_detail);
 	}
 
-	public void setFirstProdutImages(List<Product> products) {
+	public void setFirstProductImages(List<Product> products) {
 		for (Product product : products)
-			setFirstProdutImage(product);
+			setFirstProductImage(product);
 	}
 
-	public void setFirstProdutImagesOnOrderItems(List<OrderItem> ois) {
+	public void setFirstProductImagesOnOrderItems(List<OrderItem> ois) {
 		for (OrderItem orderItem : ois) {
-			setFirstProdutImage(orderItem.getProduct());
+			setFirstProductImage(orderItem.getProduct());
 		}
 	}
 }

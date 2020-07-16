@@ -3,81 +3,58 @@ package com.how2java.tmall;
 public class Test {
     public static void main(String[] args) {
         Test test = new Test();
-        test.bubbleSort();
+        test.sort();
     }
 
-    public void bubbleSort(){
+    public void sort(){
         int a[] = new int[20];
         for(int i = 0; i < a.length; i++){
             a[i] = (int) (Math.random() * 100);
         }
-        for (int i = 0; i < a.length; i++) {
-            System.out.print(a[i] + " ");
-        }
-        System.out.println(" ");
 
-        for(int j = 0; j < a.length - 1; j++) {
-            for (int i = 0; i < a.length - j - 1; i++) {
-                if (a[i] > a[i+1]) {
-                    int temp = a[i];
-                    a[i] = a[i+1];
-                    a[i+1] = temp;
-                }
-            }
-        }
+        System.out.println("初始值");
+        printArray(a);
 
+        quickSort(a, 0, a.length - 1);
+
+        System.out.println("结果");
+        printArray(a);
+    }
+
+    private void printArray(int a[]){
         for (int i = 0; i < a.length; i++) {
             System.out.print(a[i] + " ");
         }
         System.out.println(" ");
     }
 
-    public void selectSort(){
-        int a[] = new int[10];
-        for(int i = 0; i < a.length; i++){
-            a[i] = (int) (Math.random() * 100);
-        }
-        for (int i = 0; i < a.length; i++) {
-            System.out.print(a[i] + " ");
-        }
-        System.out.println(" ");
-
-        for(int j = 0; j < a.length - 1; j++) {
-            for (int i = j + 1; i < a.length; i++) {
-                if (a[i] < a[j]) {
-                    int temp = a[j];
-                    a[j] = a[i];
-                    a[i] = temp;
-                }
-            }
-        }
-
-        for (int i = 0; i < a.length; i++) {
-            System.out.print(a[i] + " ");
-        }
-        System.out.println(" ");
+    private void swap(int[] a, int x, int y){
+        int temp = a[y];
+        a[y] = a[x];
+        a[x] = temp;
     }
 
-    public void bottom(){
-        int full = 100;
-        int empty = 0;
-        int t = 0;
-        int a[] = new int[2];
-        a[0] = full;
-        a[1] = empty;
+    private int partition(int[] a, int left, int right){
+        int pivot = left;
+        int index = pivot + 1;
 
-        while(true) {
-            t += a[0];
-            int f = (int) (a[0] + a[1]) / 3;
-            int e = (int) (a[0] + a[1]) % 3;
-            a[0] = f;
-            a[1] = e;
-
-            if (a[0] + a[1] < 3) {
-                t += a[0];
-                System.out.print(t);
-                break;
+        for(int i = index; i <= right; i++){
+            if(a[i] < a[pivot]){
+                swap(a, index, i);
+                index++;
             }
         }
+
+        swap(a, pivot, index -1);
+        return index - 1;
+    }
+
+    private int[] quickSort(int[] a, int left, int right){
+        if(left < right) {
+            int partitionIndex = partition(a, left, right);
+            quickSort(a, left, partitionIndex - 1);
+            quickSort(a, partitionIndex + 1, right);
+        }
+        return a;
     }
 }

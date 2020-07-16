@@ -1,92 +1,29 @@
 package com.how2java.tmall.service;
 
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.Service;
-import com.how2java.tmall.dao.OrderItemDAO;
 import com.how2java.tmall.pojo.Order;
 import com.how2java.tmall.pojo.OrderItem;
 import com.how2java.tmall.pojo.Product;
 import com.how2java.tmall.pojo.User;
-import com.how2java.tmall.util.SpringContextUtil;
 
-@Service
-@CacheConfig(cacheNames="orderItems")
-public class OrderItemService {
-	@Autowired
-	OrderItemDAO orderItemDAO;
+public interface OrderItemService {
+	void fill(List<Order> orders);
 
-	@Autowired
-	ProductImageService productImageService;
+	void update(OrderItem orderItem);
 
-	public void fill(List<Order> orders) {
-		for (Order order : orders)
-			fill(order);
-	}
+	void fill(Order order);
 
-	@CacheEvict(allEntries=true)
-	public void update(OrderItem orderItem) {
-		orderItemDAO.save(orderItem);
-	}
+	void add(OrderItem orderItem);
 
-	public void fill(Order order) {
-		OrderItemService orderItemService = SpringContextUtil.getBean(OrderItemService.class);
-		List<OrderItem> orderItems = orderItemService.listByOrder(order);
-		float total = 0;
-		int totalNumber = 0;
-		for (OrderItem oi :orderItems) {
-			total+=oi.getNumber()*oi.getProduct().getPromotePrice();
-			totalNumber+=oi.getNumber();
-			productImageService.setFirstProdutImage(oi.getProduct());
-		}
-		order.setTotal(total);
-		order.setOrderItems(orderItems);
-		order.setTotalNumber(totalNumber);
-		order.setOrderItems(orderItems);
-	}
+	OrderItem get(int id);
 
-	@CacheEvict(allEntries=true)
-	public void add(OrderItem orderItem) {
-		orderItemDAO.save(orderItem);
-	}
+	void delete(int id);
 
-	@Cacheable(key="'orderItems-one-'+ #p0")
-	public OrderItem get(int id) {
-		return orderItemDAO.findOne(id);
-	}
+	int getSaleCount(Product product);
 
-	@CacheEvict(allEntries=true)
-	public void delete(int id) {
-		orderItemDAO.delete(id);
-	}
+	List<OrderItem> listByUser(User user);
 
-	public int getSaleCount(Product product) {
-		OrderItemService orderItemService = SpringContextUtil.getBean(OrderItemService.class);
-		List<OrderItem> ois =orderItemService.listByProduct(product);
-		int result =0;
-		for (OrderItem oi : ois) {
-			if(null!=oi.getOrder())
-				if(null!= oi.getOrder() && null!=oi.getOrder().getPayDate())
-					result+=oi.getNumber();
-		}
-		return result;
-	}
+	List<OrderItem> listByProduct(Product product);
 
-	@Cacheable(key="'orderItems-uid-'+ #p0.id")
-	public List<OrderItem> listByUser(User user) {
-		return orderItemDAO.findByUserAndOrderIsNull(user);
-	}
-
-	@Cacheable(key="'orderItems-pid-'+ #p0.id")
-	public List<OrderItem> listByProduct(Product product) {
-		return orderItemDAO.findByProduct(product);
-	}
-
-	@Cacheable(key="'orderItems-oid-'+ #p0.id")
-	public List<OrderItem> listByOrder(Order order) {
-		return orderItemDAO.findByOrderOrderByIdDesc(order);
-	}
+	List<OrderItem> listByOrder(Order order);
 }

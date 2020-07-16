@@ -92,7 +92,7 @@ public class ProductService  {
 	public void fill(Category category) {
 		ProductService productService = SpringContextUtil.getBean(ProductService.class);
 		List<Product> products = productService.listByCategory(category);
-		productImageService.setFirstProdutImages(products);
+		productImageService.setFirstProductImages(products);
 		category.setProducts(products);
 	}
 
