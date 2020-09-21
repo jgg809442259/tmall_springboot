@@ -23,13 +23,11 @@
         <artifactId>spring-boot-starter-tomcat</artifactId>
         <scope>provided</scope>
     </dependency>
-
-
+    <!-- springboot aop 支持 -->
     <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-aop</artifactId>
     </dependency>
-
 
     <!-- 热部署 -->
     <dependency>

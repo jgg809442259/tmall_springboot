@@ -18,7 +18,7 @@ public class UserAspect {
             defaultImpl = OrderServiceImpl.class)
     public OrderService orderService;
 
-    @Pointcut("execution(* com.how2java.tmall.service.impl.UserServiceImpl.getByName(..))")
+    @Pointcut("execution(public * com.how2java.tmall.web.ForeRESTController.login(..))")
     public void pointCut(){
     }
 
@@ -31,8 +31,10 @@ public class UserAspect {
     public void after(JoinPoint jp, User user){
         System.out.println("登录"+ user.getName() + "用户之后");
         List<Order> orderList = orderService.listByUserWithoutDelete(user);
-        for(Order o : orderList){
-            System.out.println("订单手机号是"+ o.getMobile());
+        if(orderList != null){
+            for(Order o : orderList){
+                System.out.println("订单手机号是"+ o.getMobile());
+            }
         }
     }
 
