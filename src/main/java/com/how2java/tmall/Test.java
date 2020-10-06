@@ -1,17 +1,11 @@
 package com.how2java.tmall;
 
+import java.util.List;
+
 public class Test {
     public static void main(String[] args) {
         Test test = new Test();
-        int a[] = {5,5,-1,0,-1,-1,-1,0,10,10,15,0,-1,-1};
-        System.out.println("输入数组");
-        for(int w: a){
-            System.out.print(" " + w);
-        }
-        System.out.println(" ");
-        String b = test.findMinSum(a.length, 20, a);
-        System.out.println("总和");
-        System.out.println(b);
+        System.out.println(test.generateParenthesis(3));
     }
 
     public String findMinSum(int n, int m, int[] a){
@@ -59,5 +53,20 @@ public class Test {
         }
         System.out.println(" ");
         return String.valueOf(sum);
+    }
+
+    public List<String> generateParenthesis(int n){
+        _generate(0, 2*n, "");
+        return null;
+    }
+
+    private void _generate(int level, int max, String s){
+        if(level >= max){
+            System.out.println(s);
+            return;
+        }
+
+        _generate(level+1, max, s+"(");
+        _generate(level+1, max, s+")");
     }
 }
