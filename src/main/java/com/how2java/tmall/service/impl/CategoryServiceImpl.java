@@ -2,6 +2,7 @@ package com.how2java.tmall.service.impl;
 
 import java.util.List;
 
+import com.how2java.tmall.mapper.CategoryMapper;
 import com.how2java.tmall.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
@@ -23,25 +24,29 @@ public class CategoryServiceImpl implements CategoryService {
     @Autowired
     CategoryDAO categoryDAO;
 
+    @Autowired
+    CategoryMapper categoryMapper;
+
     @CacheEvict(allEntries=true)
     public void add(Category bean) {
-        categoryDAO.save(bean);
+        categoryMapper.add(bean);
     }
 
     @CacheEvict(allEntries=true)
     public void delete(int id) {
-        categoryDAO.delete(id);
+        //Integer idi = id;
+        categoryMapper.deleteByPrimaryKey(id);
     }
 
     @Cacheable(key="'categories-one-'+ #p0")
     public Category get(int id) {
-        Category c= categoryDAO.findOne(id);
+        Category c= categoryMapper.selectByPrimaryKey(id);
         return c;
     }
 
     @CacheEvict(allEntries=true)
     public void update(Category bean) {
-        categoryDAO.save(bean);
+        categoryMapper.update(bean);
     }
 
     @Cacheable(key="'categories-page-'+#p0+ '-' + #p1")
@@ -54,8 +59,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Cacheable(key="'categories-all'")
     public List<Category> list() {
-        Sort sort = new Sort(Sort.Direction.DESC, "id");
-        return categoryDAO.findAll(sort);
+        return categoryMapper.list();
     }
 
     public void removeCategoryFromProduct(List<Category> cs) {

@@ -1,6 +1,7 @@
 package com.how2java.tmall;
 
 import com.how2java.tmall.util.PortUtil;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
@@ -13,6 +14,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableElasticsearchRepositories(basePackages = "com.how2java.tmall.es")
 @EnableJpaRepositories(basePackages = {"com.how2java.tmall.dao", "com.how2java.tmall.pojo"})
 @ServletComponentScan
+@MapperScan("com.how2java.tmall.mapper")
 public class Application {
     static {
         PortUtil.checkPort(6379,"Redis 服务端",true);
